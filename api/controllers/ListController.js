@@ -33,7 +33,7 @@ exports.readStudent = function(req, res) {
 
 
 exports.updateStudent = function(req, res) {
-  Student.findOneAndUpdate({_rut: req.params.studentRut}, req.body, {new: true}, function(err, student) {
+  Student.findOneAndUpdate({rut: req.params.studentRut}, req.body, {new: true}, function(err, student) {
     if (err)
       res.send(err);
     res.json(student);
@@ -42,8 +42,8 @@ exports.updateStudent = function(req, res) {
 
 
 exports.deleteStudent = function(req, res) {
-  Student.remove({
-    _rut: req.params.studentRut
+  Student.removeOne({
+    rut: req.params.studentRut
   }, function(err, student) {
     if (err)
       res.send(err);

@@ -7,27 +7,27 @@ var Student = new Schema({
 
   rut: {
     type: String,
-    required: 'Rut'
+    required: [true, 'rut field is mandatory'],
   },
 
   name: {
     type: String,
-    required: 'Name'
+    required: [true, 'Please enter your name']
   },
 
   lastName: {
     type: String,
-    required: 'Last Name'
+    required: [true, 'Last Name field is mandatory']
   },
 
   age: {
     type: String,
-    required: 'Age'
+    required: [true, 'you will never be old!']
   },
 
   course: {
     type: String,
-    required: 'Class',
+    required: [true, 'do not miss your class']
   }
 
 });
