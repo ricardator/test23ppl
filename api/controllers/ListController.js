@@ -24,7 +24,7 @@ exports.createStudent = function(req, res) {
 
 
 exports.readStudent = function(req, res) {
-  Student.findById(req.params.studentRut, function(err, student) {
+  Student.findById(req.params.rut, function(err, student) {
     if (err)
       res.send(err);
     res.json(student);
@@ -33,7 +33,7 @@ exports.readStudent = function(req, res) {
 
 
 exports.updateStudent = function(req, res) {
-  Student.findOneAndUpdate({rut: req.params.studentRut}, req.body, {new: true}, function(err, student) {
+  Student.findOneAndUpdate({rut: req.params.rut}, req.body, {new: true}, function(err, student) {
     if (err)
       res.send(err);
     res.json(student);
@@ -42,8 +42,8 @@ exports.updateStudent = function(req, res) {
 
 
 exports.deleteStudent = function(req, res) {
-  Student.removeOne({
-    rut: req.params.studentRut
+  Student.deleteOne({
+    rut: req.params.rut
   }, function(err, student) {
     if (err)
       res.send(err);
