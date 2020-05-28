@@ -16,6 +16,7 @@ build:
     - apt install -y nodejs npm
     - npm install --save-dev nodemon
     - npm install express --save
+    - service mongod start
     - npm run start
   artifacts:
     paths:
