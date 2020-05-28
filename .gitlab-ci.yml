@@ -9,17 +9,11 @@ stages:
   - deploy
 
 build:
-  image: node
+  image: mongo
   stage: build
   script:
-    - wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
-    - apt-get install gnupg
-    - wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
-    - echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.2.list
-    - apt-get update -y
-    - apt-get install -y apt-transport-https
-    - apt-get install -y mongodb-org
-    - systemctl start mongod
+    - apt update
+    - apt install nodejs npm
     - npm install --save-dev nodemon
     - npm install express --save
     - npm run start
