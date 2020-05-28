@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: 23ppl
+spec:
+  type: LoadBalancer
+  selector:
+    app: 23ppl
+  ports:
+  - port: 5000
+    targetPort: 5000

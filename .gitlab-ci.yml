@@ -5,7 +5,6 @@ cache:
 
 stages:
   - build
-  - test
   - package
   - deploy
 
@@ -13,6 +12,43 @@ build:
   image: node
   stage: build
   script:
-    npm install
-    npm start
-    
+    wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+    sudo apt-get install gnupg
+    wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+    sudo apt-get update
+    sudo apt-get install -y mongodb-org
+    sudo systemctl start mongod
+    npm install --save-dev nodemon
+    npm install express --save
+    npm run start
+  artifacts:
+    paths:
+      - ./api
+
+package:
+  stage: package
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login "${REGISTRY_URL}" -u "${GITLAB_USER}" -p "${GITLAB_TOKEN}"
+    - docker build -t "$REGISTRY_URL"/rherrera1/node-js-getting-started .
+    - docker push "$REGISTRY_URL"/rherrera1/node-js-getting-started
+
+
+deploy:
+  stage: deploy
+  image: google/cloud-sdk:latest
+  script:
+    - echo "$SERVICE_ACCOUNT_KEY" | base64 -d > gke-token.json
+    - gcloud auth activate-service-account --key-file=gke-token.json
+    - gcloud config set project 23ppl
+    - gcloud config set container/cluster v23ppl
+    - gcloud config set compute/zone southamerica-east1-a
+    - gcloud container clusters get-credentials v23ppl --zone southamerica-east1-a
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+    - ./kubectl create secret generic registry.gitlab.com --from-literal=Gitlab_User=$"GITLAB_USER" --from-literal=Gitlab_Password=$"GITLAB_TOKEN" --dry-run -o yaml | kubectl apply -f -
+    - ./kubectl apply -f deploy.yml
+    - ./kubectl apply -f service.yml
