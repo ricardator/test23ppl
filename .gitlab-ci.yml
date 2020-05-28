@@ -19,7 +19,7 @@ build:
     - npm install -g mongoose --save
     - mongod &
     - npm install
-    - npm start
+    - npm start &
   artifacts:
     paths:
       - ./api
