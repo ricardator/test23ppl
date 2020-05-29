@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 23ppl
+  name: v23ppl
 spec:
   selector:
     matchLabels:
-      app: 23ppl
+      app: v23ppl
   template:
     metadata:
       labels:
-        app: 23ppl
+        app: v23ppl
     spec:
       containers:
-        - name: 23ppl
-          image: registry.gitlab.com/rherrera1/node-js-getting-started
+        - name: v23ppl
+          image: registry.gitlab.com/rherrera1/test23ppl
           ports:
           - containerPort: 1337
       imagePullSecrets:
