@@ -44,7 +44,7 @@ deploy:
     - gcloud config set project prueba-nisum
     - gcloud config set container/cluster v23ppl
     - gcloud config set compute/zone us-central1-a
-    - gcloud container clusters get-credentials nodejsapp-cluster --zone us-central1-a
+    - gcloud container clusters get-credentials v23ppl --zone us-central1-a
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - ./kubectl create secret generic registry.gitlab.com --from-literal=Gitlab_User=$"GITLAB_USER" --from-literal=Gitlab_Password=$"GITLAB_TOKEN" --dry-run -o yaml | kubectl apply -f -
